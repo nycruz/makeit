@@ -1,7 +1,6 @@
-package ui
+package tui
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"os/exec"
@@ -12,8 +11,7 @@ import (
 )
 
 var style = lipgloss.NewStyle().
-	Margin(1, 2).
-	BorderStyle(lipgloss.NormalBorder())
+	Margin(1, 2)
 
 type Item struct {
 	Name string
@@ -33,16 +31,14 @@ func (i Item) FilterValue() string {
 }
 
 type Model struct {
-	List   list.Model
-	logger *os.File
+	List list.Model
 }
 
-func NewModel(items []list.Item, logger *os.File) *Model {
+func New(items []list.Item) *Model {
 	l := list.New(items, list.NewDefaultDelegate(), 0, 0)
 
 	return &Model{
-		List:   l,
-		logger: logger,
+		List: l,
 	}
 }
 
@@ -62,14 +58,13 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			cmd.Stdout = os.Stdout
 			err := cmd.Run()
 			if err != nil {
-				log.Fatalf("error running make command: %v", err)
+				log.Fatalf("tui: error running make command: %s", err)
 			}
 			return m, tea.Quit
 		}
 	case tea.WindowSizeMsg:
 		horizontal, _ := style.GetFrameSize()
 		listTotalItems := len(m.List.Items())
-		m.logger.Write([]byte(fmt.Sprintf("listTotalItems: %d", listTotalItems)))
 		m.List.SetSize(msg.Width-horizontal, 4*listTotalItems)
 	}
 
