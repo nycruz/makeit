@@ -1,6 +1,6 @@
 module github.com/nycruz/makeit
 
-go 1.20
+go 1.22
 
 require (
 	github.com/charmbracelet/bubbles v0.15.0

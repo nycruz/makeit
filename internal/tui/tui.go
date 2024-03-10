@@ -11,6 +11,8 @@ import (
 )
 
 var style = lipgloss.NewStyle().
+	Border(lipgloss.RoundedBorder()).
+	BorderForeground(lipgloss.Color("8")).
 	Margin(1, 2)
 
 type Item struct {
@@ -36,6 +38,8 @@ type Model struct {
 
 func New(items []list.Item) *Model {
 	l := list.New(items, list.NewDefaultDelegate(), 0, 0)
+	l.SetFilteringEnabled(true)
+	l.SetShowFilter(true)
 
 	return &Model{
 		List: l,
@@ -48,6 +52,7 @@ func (m Model) Init() tea.Cmd {
 
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
+
 	case tea.KeyMsg:
 		switch msg.String() {
 		case "ctrl+c", "q":
@@ -62,10 +67,16 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 			return m, tea.Quit
 		}
+
 	case tea.WindowSizeMsg:
-		horizontal, _ := style.GetFrameSize()
+		horizontal, vertical := style.GetFrameSize()
 		listTotalItems := len(m.List.Items())
-		m.List.SetSize(msg.Width-horizontal, 4*listTotalItems)
+		m.List.SetWidth(msg.Width - horizontal)
+		m.List.SetHeight(4 * listTotalItems)
+
+		style.Width(msg.Width - horizontal)
+		style.Height(4*listTotalItems - vertical)
+
 	}
 
 	var cmd tea.Cmd
