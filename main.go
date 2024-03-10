@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 
 	"github.com/charmbracelet/bubbles/list"
@@ -12,6 +13,7 @@ import (
 
 func main() {
 	var makefileName = flag.String("f", "Makefile", "Name of Makefile. Default: Makefile")
+	var isVerbose = flag.Bool("v", false, "Prints the command")
 	// var isDebug = flag.Bool("debug", false, "Enable debug mode")
 	flag.Parse()
 
@@ -24,9 +26,14 @@ func main() {
 	if len(targets) > 0 {
 		var items []list.Item
 		for _, v := range targets {
+			desc := v.Description
+			if *isVerbose {
+				desc = fmt.Sprintf("%s: `%s`", v.Description, v.Command)
+			}
+
 			items = append(items, tui.Item{
 				Name: v.Name,
-				Desc: v.Description,
+				Desc: desc,
 			})
 		}
 
