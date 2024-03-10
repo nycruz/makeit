@@ -12,7 +12,7 @@ type target struct {
 	Description string
 }
 
-func NewTarget() *target {
+func New() *target {
 	return &target{}
 }
 

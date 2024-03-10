@@ -15,7 +15,7 @@ func main() {
 	// var isDebug = flag.Bool("debug", false, "Enable debug mode")
 	flag.Parse()
 
-	t := target.NewTarget()
+	t := target.New()
 	targets, err := t.GetMakefileTargets(*makefileName)
 	if err != nil {
 		log.Fatalf("could not get targets: %v", err)
