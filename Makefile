@@ -10,4 +10,7 @@ clean: # Clean the project
 test: # Run the tests
 	go test -v ./...
 
+install: # Install the project
+	go build -o makeit
+
 .PHONY: build run

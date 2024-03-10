@@ -11,9 +11,8 @@ import (
 )
 
 var style = lipgloss.NewStyle().
-	Border(lipgloss.RoundedBorder()).
-	BorderForeground(lipgloss.Color("8")).
-	Margin(1, 2)
+	Margin(0, 0, 1, 0).
+	Padding(1, 1)
 
 type Item struct {
 	Name string
@@ -70,13 +69,12 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	case tea.WindowSizeMsg:
 		horizontal, vertical := style.GetFrameSize()
-		listTotalItems := len(m.List.Items())
-		m.List.SetWidth(msg.Width - horizontal)
-		m.List.SetHeight(4 * listTotalItems)
 
 		style.Width(msg.Width - horizontal)
-		style.Height(4*listTotalItems - vertical)
+		style.Height(msg.Height - vertical)
 
+		m.List.SetWidth(msg.Width - horizontal)
+		m.List.SetHeight(msg.Height - vertical)
 	}
 
 	var cmd tea.Cmd
