@@ -3,11 +3,12 @@
 Makeit is a simple tool to help you view and run your Makefile targets from the command line.
 
 ![makeit](./assets/default.png)
+
 ![makeit](./assets/verbose.png)
 
 ## Installation
 
-```shell
+```sh
 go install github.com/nycruz/makeit@latest
 ```
 
@@ -15,18 +16,18 @@ go install github.com/nycruz/makeit@latest
 
 Default: use the Makefile in the current directory
 
-```shell
+```sh
 makeit
 ```
 
 Specify a custom Makefile
 
-```shell
+```sh
 makeit -f Makefile.dev
 ```
 
 Verbose output. Show the command
 
-```shell
+```sh
 makeit -v
 ```
