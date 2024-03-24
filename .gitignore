@@ -1,0 +1,5 @@
+bin
+*.log
+*.example
+.DS_Store
+makeit
