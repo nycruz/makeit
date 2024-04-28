@@ -14,7 +14,6 @@ import (
 func main() {
 	var makefileName = flag.String("f", "Makefile", "Name of Makefile. Default: Makefile")
 	var isVerbose = flag.Bool("v", false, "Prints the command")
-	// var isDebug = flag.Bool("debug", false, "Enable debug mode")
 	flag.Parse()
 
 	t := target.New()
@@ -39,7 +38,7 @@ func main() {
 
 		m := tui.New(items)
 		m.List.Title = "Select Target"
-		p := tea.NewProgram(m)
+		p := tea.NewProgram(m, tea.WithAltScreen())
 		if _, err := p.Run(); err != nil {
 			log.Fatalf("error running makeit: %v", err)
 		}
