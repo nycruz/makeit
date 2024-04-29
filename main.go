@@ -14,7 +14,6 @@ import (
 func main() {
 	var makefileName = flag.String("f", "Makefile", "Name of Makefile. Default: Makefile")
 	var isVerbose = flag.Bool("v", false, "Prints the command")
-	// var isDebug = flag.Bool("debug", false, "Enable debug mode")
 	flag.Parse()
 
 	t := target.New()

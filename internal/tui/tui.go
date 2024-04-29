@@ -71,10 +71,19 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		horizontal, vertical := style.GetFrameSize()
 
 		style.Width(msg.Width - horizontal)
-		style.Height(msg.Height - vertical)
-
 		m.List.SetWidth(msg.Width - horizontal)
-		m.List.SetHeight(msg.Height - vertical)
+
+		// Calculate the height of the list based on the number of items
+		itemCount := len(m.List.Items())
+		itemHeight := 4 // Height per item
+		totalHeight := itemCount * itemHeight
+
+		if totalHeight > msg.Height-vertical {
+			totalHeight = msg.Height - vertical
+		}
+
+		style.Height(totalHeight)
+		m.List.SetHeight(totalHeight)
 	}
 
 	var cmd tea.Cmd

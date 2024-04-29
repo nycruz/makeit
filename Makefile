@@ -13,4 +13,4 @@ test: # Run the tests
 install: # Install the project
 	go build -o makeit
 
-.PHONY: build run
+.PHONY: all clean test build run
