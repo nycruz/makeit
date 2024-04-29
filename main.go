@@ -38,7 +38,7 @@ func main() {
 
 		m := tui.New(items)
 		m.List.Title = "Select Target"
-		p := tea.NewProgram(m, tea.WithAltScreen())
+		p := tea.NewProgram(m)
 		if _, err := p.Run(); err != nil {
 			log.Fatalf("error running makeit: %v", err)
 		}
