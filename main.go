@@ -22,28 +22,27 @@ func main() {
 		log.Fatalf("could not get targets: %v", err)
 	}
 
-	if len(targets) > 0 {
-		var items []list.Item
-		for _, v := range targets {
-			desc := v.Description
-			if *isVerbose {
-				desc = fmt.Sprintf("%s: `%s`", v.Description, v.Command)
-			}
-
-			items = append(items, tui.Item{
-				Name: v.Name,
-				Desc: desc,
-			})
-		}
-
-		m := tui.New(items)
-		m.List.Title = "Select Target"
-		p := tea.NewProgram(m)
-		if _, err := p.Run(); err != nil {
-			log.Fatalf("error running makeit: %v", err)
-		}
-	} else {
+	if len(targets) == 0 {
 		log.Fatalln("no targets found")
 	}
 
+	var items []list.Item
+	for _, v := range targets {
+		desc := v.Description
+		if *isVerbose {
+			desc = fmt.Sprintf("%s: `%s`", v.Description, v.Command)
+		}
+
+		items = append(items, tui.Item{
+			Name: v.Name,
+			Desc: desc,
+		})
+	}
+
+	m := tui.New(items)
+	m.List.Title = "Select Target"
+	p := tea.NewProgram(m)
+	if _, err := p.Run(); err != nil {
+		log.Fatalf("error running makeit: %v", err)
+	}
 }
