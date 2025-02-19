@@ -63,7 +63,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			cmd.Stderr = os.Stderr
 			cmd.Stdout = os.Stdout
 			if err := cmd.Run(); err != nil {
-				m.err = fmt.Errorf("'make' command failed: %v", err)
+				m.err = fmt.Errorf("'make' command failed: %w", err)
 				return m, tea.Quit
 			}
 
