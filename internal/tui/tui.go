@@ -1,7 +1,7 @@
 package tui
 
 import (
-	"log"
+	"fmt"
 	"os"
 	"os/exec"
 
@@ -33,6 +33,7 @@ func (i Item) FilterValue() string {
 
 type Model struct {
 	List list.Model
+	err  error
 }
 
 func New(items []list.Item) *Model {
@@ -42,6 +43,7 @@ func New(items []list.Item) *Model {
 
 	return &Model{
 		List: l,
+		err:  nil,
 	}
 }
 
@@ -60,10 +62,11 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			cmd := exec.Command("make", m.List.SelectedItem().FilterValue())
 			cmd.Stderr = os.Stderr
 			cmd.Stdout = os.Stdout
-			err := cmd.Run()
-			if err != nil {
-				log.Fatalf("tui: error running make command: %s", err)
+			if err := cmd.Run(); err != nil {
+				m.err = fmt.Errorf("'make' command failed: %v", err)
+				return m, tea.Quit
 			}
+
 			return m, tea.Quit
 		}
 
@@ -92,5 +95,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m Model) View() string {
+	if m.err != nil {
+		return fmt.Sprintf("Error: %v\n", m.err)
+	}
+
 	return style.Render(m.List.View())
 }
